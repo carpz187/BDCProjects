@@ -17,7 +17,7 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN cp .env.example .env && touch database/database.sqlite
+RUN cp .env.example .env
 
 RUN chmod -R 777 storage bootstrap/cache database
 
@@ -25,4 +25,4 @@ RUN php artisan key:generate
 
 EXPOSE 10000
 
-CMD php artisan config:clear && php artisan cache:clear && php artisan route:clear && php artisan view:clear && php artisan migrate:fresh --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+CMD php artisan config:clear && php artisan cache:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
