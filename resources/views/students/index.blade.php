@@ -15,7 +15,7 @@
     <section class="ajax-card">
         <h2 id="formTitle">Add Student</h2>
 
-        <form id="studentForm">
+        <form id="studentForm" action="{{ route('students.store') }}" method="POST" data-list-url="{{ route('students.ajax.index') }}">
             @csrf
             <input type="hidden" id="studentRecordId" name="id">
 
@@ -100,9 +100,35 @@
                     </tr>
                 </thead>
                 <tbody id="studentsTableBody">
-                    <tr>
-                        <td colspan="8" class="loading-row">Loading students...</td>
-                    </tr>
+                    @forelse($students as $student)
+                        <tr data-id="{{ $student->id }}">
+                            <td>{{ $student->id }}</td>
+                            <td>{{ $student->user_account_id ?? 'No Account' }}</td>
+                            <td>{{ $student->student_id }}</td>
+                            <td>{{ $student->first_name }}</td>
+                            <td>{{ $student->last_name }}</td>
+                            <td>{{ optional($student->degree)->degree_title ?? 'No Degree' }}</td>
+                            <td>{{ $student->email }}</td>
+                            <td>
+                                <div class="actions">
+                                    <a class="btn btn-warning" href="{{ route('students.edit', $student) }}">
+                                        <i class="bi bi-pencil-square"></i>Edit
+                                    </a>
+                                    <form action="{{ route('students.destroy', $student) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this student?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="loading-row">No student records found.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

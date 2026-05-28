@@ -12,6 +12,8 @@ $(function () {
     const $formTitle = $('#formTitle');
     const $saveButton = $('#saveStudentBtn');
     const $recordId = $('#studentRecordId');
+    const listUrl = $studentForm.data('list-url');
+    const storeUrl = $studentForm.attr('action');
     const syncKey = 'students-table-updated-at';
     let lastSyncValue = null;
 
@@ -79,10 +81,16 @@ $(function () {
         `;
     }
 
-    function loadStudents() {
-        $tableBody.html('<tr><td colspan="8" class="loading-row">Loading students...</td></tr>');
+    function loadStudents(showLoading = true) {
+        if (showLoading) {
+            $tableBody.html('<tr><td colspan="8" class="loading-row">Loading students...</td></tr>');
+        }
 
-        $.get('/students/ajax/list')
+        $.ajax({
+            url: listUrl,
+            method: 'GET',
+            timeout: 10000,
+        })
             .done(function (response) {
                 if (!response.students.length) {
                     $tableBody.html('<tr><td colspan="8" class="loading-row">No student records found.</td></tr>');
@@ -105,7 +113,7 @@ $(function () {
         clearMessage();
 
         const id = $recordId.val();
-        const url = id ? `/students/${id}` : '/students';
+        const url = id ? `/students/${id}` : storeUrl;
         const formData = $studentForm.serializeArray();
 
         if (id) {
@@ -182,5 +190,5 @@ $(function () {
         }
     });
 
-    loadStudents();
+    loadStudents(false);
 });
