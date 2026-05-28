@@ -17,7 +17,9 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN cp .env.example .env
+RUN cp .env.example .env && touch database/database.sqlite
+
+RUN chmod -R 777 storage bootstrap/cache database
 
 RUN php artisan key:generate
 
