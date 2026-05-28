@@ -7,17 +7,22 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     libpng-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+    && docker-php-ext-install pdo pdo_mysql pdo_sqlite zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
+
+ENV APP_ENV=production \
+    APP_DEBUG=false
 
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
 RUN cp .env.example .env
+
+RUN touch database/database.sqlite
 
 RUN chmod -R 777 storage bootstrap/cache database
 
