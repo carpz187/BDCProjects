@@ -18,6 +18,8 @@ Route::get('/maintenance', [PagesController::class, 'maintenance']);
 Route::middleware('auth.session')->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/export/pdf', [DashboardController::class, 'exportPdf'])->name('dashboard.export.pdf');
+    Route::get('/dashboard/export/excel', [DashboardController::class, 'exportExcel'])->name('dashboard.export.excel');
 
     Route::get('/student/dashboard', [DashboardController::class, 'student'])
         ->middleware('role:student')

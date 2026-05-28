@@ -75,6 +75,33 @@
             font-weight: 850;
         }
 
+        .dashboard-export-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .dashboard-export-actions a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 38px;
+            padding: 8px 11px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #18202f;
+            font-size: 12px;
+            font-weight: 950;
+            text-decoration: none;
+        }
+
+        .dashboard-export-actions a:hover {
+            background: #ffdc8a;
+            color: #18202f;
+        }
+
         .teacher-work {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 320px;
@@ -193,6 +220,10 @@
                 <i class="bi bi-person-badge-fill"></i>
                 <strong>Teacher</strong>
                 <span>Session Active</span>
+                <div class="dashboard-export-actions">
+                    <a href="{{ route('dashboard.export.pdf') }}"><i class="bi bi-file-earmark-pdf-fill"></i>PDF</a>
+                    <a href="{{ route('dashboard.export.excel') }}"><i class="bi bi-file-earmark-spreadsheet-fill"></i>Excel</a>
+                </div>
             </aside>
         </header>
 
