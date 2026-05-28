@@ -1,3 +1,12 @@
+FROM node:22-alpine AS assets
+
+WORKDIR /app
+
+COPY package*.json vite.config.js ./
+COPY resources ./resources
+
+RUN npm install && npm run build
+
 FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
@@ -17,6 +26,8 @@ ENV APP_ENV=production \
     APP_DEBUG=false
 
 COPY . .
+
+COPY --from=assets /app/public/build ./public/build
 
 RUN composer install --no-dev --optimize-autoloader
 
